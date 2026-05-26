@@ -1,50 +1,42 @@
-# [PROJECT_NAME] Constitution
-<!-- Example: Spec Constitution, TaskFlow Constitution, etc. -->
+<!-- Sync Impact Report
+Version change: 0.0.0 → 1.0.0
+Added sections: All (initial ratification)
+Templates requiring updates: ✅ All templates reviewed and aligned
+Follow-up TODOs: None
+-->
+
+# LiteAuth Admin Constitution
 
 ## Core Principles
 
-### [PRINCIPLE_1_NAME]
-<!-- Example: I. Library-First -->
-[PRINCIPLE_1_DESCRIPTION]
-<!-- Example: Every feature starts as a standalone library; Libraries must be self-contained, independently testable, documented; Clear purpose required - no organizational-only libraries -->
+### I. Component-First Frontend (NON-NEGOTIABLE)
+All UI MUST be built as reusable React functional components. Components must be organized by domain (auth, users, tasks, roles). No class components. TypeScript MUST be used throughout. Shadcn UI primitives are the foundation; custom styles via Tailwind CSS only. Lucide Icons for all iconography.
 
-### [PRINCIPLE_2_NAME]
-<!-- Example: II. CLI Interface -->
-[PRINCIPLE_2_DESCRIPTION]
-<!-- Example: Every library exposes functionality via CLI; Text in/out protocol: stdin/args → stdout, errors → stderr; Support JSON + human-readable formats -->
+### II. Secure by Default (NON-NEGOTIABLE)
+All API routes MUST be protected by JWT middleware unless explicitly public (login endpoint only). Passwords MUST be hashed with bcrypt (min 10 salt rounds). All user inputs MUST be validated with express-validator on the server. JWT tokens MUST be short-lived (1h access token, 7d refresh token with Remember Me). No sensitive data in localStorage — use httpOnly cookies or memory.
 
-### [PRINCIPLE_3_NAME]
-<!-- Example: III. Test-First (NON-NEGOTIABLE) -->
-[PRINCIPLE_3_DESCRIPTION]
-<!-- Example: TDD mandatory: Tests written → User approved → Tests fail → Then implement; Red-Green-Refactor cycle strictly enforced -->
+### III. Role-Based Access Control (NON-NEGOTIABLE)
+Every protected action MUST enforce RBAC. Four roles exist: Super Admin, Admin, Manager, Viewer. Permission checks MUST happen server-side — never trust client-supplied roles. Frontend hides unauthorized UI but server enforces. Permission matrix MUST be declarative and centralized.
 
-### [PRINCIPLE_4_NAME]
-<!-- Example: IV. Integration Testing -->
-[PRINCIPLE_4_DESCRIPTION]
-<!-- Example: Focus areas requiring integration tests: New library contract tests, Contract changes, Inter-service communication, Shared schemas -->
+### IV. REST API Conventions (NON-NEGOTIABLE)
+All backend endpoints MUST follow REST conventions: proper HTTP verbs (GET/POST/PUT/PATCH/DELETE), appropriate status codes, consistent JSON response envelope `{ data, error, meta }`. Express Router MUST be used per domain module. No route logic in server entry file.
 
-### [PRINCIPLE_5_NAME]
-<!-- Example: V. Observability, VI. Versioning & Breaking Changes, VII. Simplicity -->
-[PRINCIPLE_5_DESCRIPTION]
-<!-- Example: Text I/O ensures debuggability; Structured logging required; Or: MAJOR.MINOR.BUILD format; Or: Start simple, YAGNI principles -->
+### V. Activity Audit Trail
+Every significant state change MUST be logged to the `activity_logs` table: user creation/deletion, login/logout, task changes, role assignments. Logs are append-only — no update or delete on log entries.
 
-## [SECTION_2_NAME]
-<!-- Example: Additional Constraints, Security Requirements, Performance Standards, etc. -->
+## Technology Standards
 
-[SECTION_2_CONTENT]
-<!-- Example: Technology stack requirements, compliance standards, deployment policies, etc. -->
+**Frontend**: React 18 + TypeScript + Vite + Tailwind CSS + Shadcn UI + Lucide Icons + Recharts
+**Backend**: Node.js 20 + Express 4 + express-validator + jsonwebtoken + bcrypt
+**Database**: SQLite (via better-sqlite3) — PostgreSQL-compatible schema for easy migration
+**Dev Tooling**: ESLint + Prettier + tsx for TypeScript execution
 
-## [SECTION_3_NAME]
-<!-- Example: Development Workflow, Review Process, Quality Gates, etc. -->
+## Development Workflow
 
-[SECTION_3_CONTENT]
-<!-- Example: Code review requirements, testing gates, deployment approval process, etc. -->
+Code MUST pass ESLint and TypeScript checks before commit. API endpoints MUST be manually tested before marking a task complete. Dark/Light mode MUST be verified on every UI change. Folder structure per the project guide MUST be respected: `client/` for frontend, `server/` for backend.
 
 ## Governance
-<!-- Example: Constitution supersedes all other practices; Amendments require documentation, approval, migration plan -->
 
-[GOVERNANCE_RULES]
-<!-- Example: All PRs/reviews must verify compliance; Complexity must be justified; Use [GUIDANCE_FILE] for runtime development guidance -->
+This constitution supersedes all other practices. Amendments require documented rationale and version bump. All implementation tasks must verify compliance with Principles I–V before marking complete. RBAC (Principle III) and Security (Principle II) violations are blocking — they MUST be resolved before any related task proceeds.
 
-**Version**: [CONSTITUTION_VERSION] | **Ratified**: [RATIFICATION_DATE] | **Last Amended**: [LAST_AMENDED_DATE]
-<!-- Example: Version: 2.1.1 | Ratified: 2025-06-13 | Last Amended: 2025-07-16 -->
+**Version**: 1.0.0 | **Ratified**: 2026-05-26 | **Last Amended**: 2026-05-26
